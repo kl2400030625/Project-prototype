@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - PathFinder</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-container">
+      <a href="index.html" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        Back to Home
+      </a>
+      
+      <!-- Role Selection -->
+      <div id="roleSelection">
+        <div class="auth-header">
+          <div class="auth-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          </div>
+          <h1>Welcome Back</h1>
+          <p>Choose how you want to sign in</p>
+        </div>
+        
+        <div class="role-cards">
+          <div class="role-card" onclick="selectRole('user')">
+            <div class="role-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <h3>Student Login</h3>
+              <p>Access your dashboard and explore career paths</p>
+            </div>
+          </div>
+          
+          <div class="role-card" onclick="selectRole('admin')">
+            <div class="role-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <h3>Admin Login</h3>
+              <p>Manage roadmaps, careers, and internships</p>
+            </div>
+          </div>
+        </div>
+        
+        <p class="auth-footer">
+          Don't have an account? <a href="signup.html">Sign up</a>
+        </p>
+      </div>
+      
+      <!-- Login Form -->
+      <div id="loginForm" class="hidden">
+        <button class="back-link" onclick="goBackToRoles()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          Back to role selection
+        </button>
+        
+        <div class="form-card">
+          <div class="form-card-header">
+            <div class="form-icon" id="formIcon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <h2 id="formTitle">Student Login</h2>
+            <p id="formDescription">Enter your email and password to access your dashboard</p>
+          </div>
+          
+          <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="you@example.com" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="password">Password</label>
+              <div class="password-input">
+                <input type="password" id="password" placeholder="Enter your password" required>
+                <button type="button" class="password-toggle" onclick="togglePassword()">
+                  <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+            
+            <div id="errorMessage" class="error-message hidden"></div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;" id="submitBtn">
+              Sign in
+            </button>
+            
+            <p id="demoCredentials" class="demo-credentials hidden">
+              Demo credentials: admin@pathfinder.com / admin123
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="js/main.js"></script>
+  <script>
+    let selectedRole = null;
+    
+    function selectRole(role) {
+      selectedRole = role;
+      document.getElementById('roleSelection').classList.add('hidden');
+      document.getElementById('loginForm').classList.remove('hidden');
+      
+      const formIcon = document.getElementById('formIcon');
+      const formTitle = document.getElementById('formTitle');
+      const formDescription = document.getElementById('formDescription');
+      const demoCredentials = document.getElementById('demoCredentials');
+      
+      if (role === 'admin') {
+        formIcon.className = 'form-icon admin';
+        formIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
+        formTitle.textContent = 'Admin Login';
+        formDescription.textContent = 'Enter your admin credentials to continue';
+        document.getElementById('email').placeholder = 'admin@pathfinder.com';
+        demoCredentials.classList.remove('hidden');
+      } else {
+        formIcon.className = 'form-icon user';
+        formIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+        formTitle.textContent = 'Student Login';
+        formDescription.textContent = 'Enter your email and password to access your dashboard';
+        document.getElementById('email').placeholder = 'you@example.com';
+        demoCredentials.classList.add('hidden');
+      }
+    }
+    
+    function goBackToRoles() {
+      selectedRole = null;
+      document.getElementById('roleSelection').classList.remove('hidden');
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('errorMessage').classList.add('hidden');
+      document.getElementById('email').value = '';
+      document.getElementById('password').value = '';
+    }
+    
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const eyeIcon = document.getElementById('eyeIcon');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.innerHTML = '<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/>';
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.innerHTML = '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>';
+      }
+    }
+    
+    function handleLogin(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorMessage = document.getElementById('errorMessage');
+      const submitBtn = document.getElementById('submitBtn');
+      
+      submitBtn.textContent = 'Signing in...';
+      submitBtn.disabled = true;
+      
+      setTimeout(() => {
+        if (selectedRole === 'admin') {
+          if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
+            DataStore.currentUser = { role: 'admin', email };
+            DataStore.save();
+            window.location.href = 'admin.html';
+          } else {
+            errorMessage.textContent = 'Invalid admin credentials';
+            errorMessage.classList.remove('hidden');
+          }
+        } else {
+          const user = DataStore.users.find(u => u.email === email && u.password === password);
+          if (user) {
+            DataStore.currentUser = user;
+            DataStore.save();
+            window.location.href = 'dashboard.html';
+          } else {
+            errorMessage.textContent = 'Invalid email or password';
+            errorMessage.classList.remove('hidden');
+          }
+        }
+        
+        submitBtn.textContent = 'Sign in';
+        submitBtn.disabled = false;
+      }, 500);
+    }
+  </script>
+</body>
+</html>

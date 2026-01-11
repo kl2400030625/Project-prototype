@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - PathFinder</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard">
+    <nav class="dashboard-nav">
+      <div class="dashboard-nav-content">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          </div>
+          <span>PathFinder</span>
+        </a>
+        <button class="btn btn-outline" onclick="logout()">Logout</button>
+      </div>
+    </nav>
+    
+    <main class="dashboard-main">
+      <div class="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <p>Manage roadmaps, careers, internships, and webinars</p>
+      </div>
+      
+      <div class="dashboard-tabs" id="adminTabs">
+        <button class="dashboard-tab active" data-tab="roadmaps">Roadmaps</button>
+        <button class="dashboard-tab" data-tab="careers">Careers</button>
+        <button class="dashboard-tab" data-tab="internships">Internships</button>
+        <button class="dashboard-tab" data-tab="webinars">Webinars</button>
+        <button class="dashboard-tab" data-tab="welcome-videos">Welcome Videos</button>
+      </div>
+      
+      <div class="dashboard-content" id="adminContent">
+        <!-- Content will be rendered here -->
+      </div>
+    </main>
+  </div>
+  
+  <script src="js/main.js"></script>
+  <script>
+    // Check admin access
+    if (!DataStore.currentUser || DataStore.currentUser.role !== 'admin') {
+      window.location.href = 'login.html';
+    }
+    
+    let activeTab = 'roadmaps';
+    const targetAudiences = ['All Students', 'Engineering', 'Medical', 'Commerce', 'Arts', 'Law', 'Design', 'Technology', 'Science'];
+    
+    // Tab switching
+    document.getElementById('adminTabs').addEventListener('click', (e) => {
+      if (e.target.classList.contains('dashboard-tab')) {
+        activeTab = e.target.dataset.tab;
+        document.querySelectorAll('.dashboard-tab').forEach(t => t.classList.remove('active'));
+        e.target.classList.add('active');
+        renderContent();
+      }
+    });
+    
+    function renderContent() {
+      const content = document.getElementById('adminContent');
+      
+      if (activeTab === 'roadmaps') {
+        content.innerHTML = renderRoadmapForm() + renderResourceList('roadmaps', DataStore.roadmaps);
+      } else if (activeTab === 'careers') {
+        content.innerHTML = renderCareerForm() + renderResourceList('careers', DataStore.careers);
+      } else if (activeTab === 'internships') {
+        content.innerHTML = renderInternshipForm() + renderResourceList('internships', DataStore.internships);
+      } else if (activeTab === 'webinars') {
+        content.innerHTML = renderWebinarForm() + renderResourceList('webinars', DataStore.webinars);
+      } else if (activeTab === 'welcome-videos') {
+        content.innerHTML = renderWelcomeVideosForm();
+      }
+    }
+    
+    function renderTargetAudienceCheckboxes() {
+      return targetAudiences.map(audience => `
+        <label class="checkbox-item">
+          <input type="checkbox" name="targetAudience" value="${audience}">
+          ${audience}
+        </label>
+      `).join('');
+    }
+    
+    function renderRoadmapForm() {
+      return `
+        <div class="admin-form">
+          <h3>Add New Roadmap</h3>
+          <form onsubmit="addRoadmap(event)">
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" id="roadmapTitle" placeholder="e.g., Software Engineering Roadmap" required>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="roadmapDescription" rows="3" placeholder="Brief description of the roadmap" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); font-family: inherit;"></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Duration</label>
+                <input type="text" id="roadmapDuration" placeholder="e.g., 4 years">
+              </div>
+              <div class="form-group">
+                <label>Difficulty</label>
+                <select id="roadmapDifficulty" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius);">
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Target Audience</label>
+              <div class="checkbox-group">${renderTargetAudienceCheckboxes()}</div>
+            </div>
+            <div class="form-group">
+              <label>Video URL (Optional)</label>
+              <input type="url" id="roadmapVideo" placeholder="https://youtube.com/watch?v=...">
+            </div>
+            <div class="form-group">
+              <label>Attach Files (PDF, Documents)</label>
+              <div class="file-upload" onclick="document.getElementById('roadmapFiles').click()">
+                <input type="file" id="roadmapFiles" multiple accept=".pdf,.doc,.docx" style="display: none;" onchange="handleFileSelect(event, 'roadmapFileList')">
+                <div class="file-upload-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <p><span>Click to upload</span> or drag and drop</p>
+                <p>PDF, DOC up to 10MB</p>
+              </div>
+              <div class="uploaded-files" id="roadmapFileList"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Roadmap</button>
+          </form>
+        </div>
+        <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border);">
+      `;
+    }
+    
+    function renderCareerForm() {
+      return `
+        <div class="admin-form">
+          <h3>Add New Career Option</h3>
+          <form onsubmit="addCareer(event)">
+            <div class="form-group">
+              <label>Career Title</label>
+              <input type="text" id="careerTitle" placeholder="e.g., Data Scientist" required>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="careerDescription" rows="3" placeholder="Describe this career path" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); font-family: inherit;"></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Average Salary</label>
+                <input type="text" id="careerSalary" placeholder="e.g., 8-15 LPA">
+              </div>
+              <div class="form-group">
+                <label>Growth Rate</label>
+                <input type="text" id="careerGrowth" placeholder="e.g., High">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Target Audience</label>
+              <div class="checkbox-group">${renderTargetAudienceCheckboxes()}</div>
+            </div>
+            <div class="form-group">
+              <label>Video URL (Optional)</label>
+              <input type="url" id="careerVideo" placeholder="https://youtube.com/watch?v=...">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Career</button>
+          </form>
+        </div>
+        <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border);">
+      `;
+    }
+    
+    function renderInternshipForm() {
+      return `
+        <div class="admin-form">
+          <h3>Add New Internship</h3>
+          <form onsubmit="addInternship(event)">
+            <div class="form-group">
+              <label>Company Name</label>
+              <input type="text" id="internshipCompany" placeholder="e.g., Google" required>
+            </div>
+            <div class="form-group">
+              <label>Role</label>
+              <input type="text" id="internshipRole" placeholder="e.g., Software Engineering Intern" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Duration</label>
+                <input type="text" id="internshipDuration" placeholder="e.g., 3 months">
+              </div>
+              <div class="form-group">
+                <label>Stipend</label>
+                <input type="text" id="internshipStipend" placeholder="e.g., 50,000/month">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Target Audience</label>
+              <div class="checkbox-group">${renderTargetAudienceCheckboxes()}</div>
+            </div>
+            <div class="form-group">
+              <label>Apply Link</label>
+              <input type="url" id="internshipLink" placeholder="https://..." required>
+            </div>
+            <div class="form-group">
+              <label>Video URL (Optional)</label>
+              <input type="url" id="internshipVideo" placeholder="https://youtube.com/watch?v=...">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Internship</button>
+          </form>
+        </div>
+        <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border);">
+      `;
+    }
+    
+    function renderWebinarForm() {
+      return `
+        <div class="admin-form">
+          <h3>Add New Webinar</h3>
+          <form onsubmit="addWebinar(event)">
+            <div class="form-group">
+              <label>Webinar Title</label>
+              <input type="text" id="webinarTitle" placeholder="e.g., Career in AI" required>
+            </div>
+            <div class="form-group">
+              <label>Speaker</label>
+              <input type="text" id="webinarSpeaker" placeholder="e.g., Dr. John Smith" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="webinarDate" required>
+              </div>
+              <div class="form-group">
+                <label>Time</label>
+                <input type="time" id="webinarTime" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Target Audience</label>
+              <div class="checkbox-group">${renderTargetAudienceCheckboxes()}</div>
+            </div>
+            <div class="form-group">
+              <label>Registration Link</label>
+              <input type="url" id="webinarLink" placeholder="https://..." required>
+            </div>
+            <div class="form-group">
+              <label>Video URL (For Recorded Webinars)</label>
+              <input type="url" id="webinarVideo" placeholder="https://youtube.com/watch?v=...">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Webinar</button>
+          </form>
+        </div>
+        <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border);">
+      `;
+    }
+    
+    function renderWelcomeVideosForm() {
+      const domains = ['general', 'technology', 'medicine', 'business', 'engineering', 'arts', 'science', 'law', 'media'];
+      
+      return `
+        <div class="admin-form">
+          <h3>Manage Welcome Videos</h3>
+          <p style="color: var(--muted-foreground); margin-bottom: 1.5rem;">Add welcome videos for different career domains. These will be shown to new users based on their interests.</p>
+          
+          ${domains.map(domain => `
+            <div class="form-group">
+              <label style="text-transform: capitalize;">${domain} - Welcome Video URL</label>
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="url" id="video_${domain}" placeholder="https://youtube.com/embed/..." value="${DataStore.welcomeVideos[domain] || ''}" style="flex: 1;">
+                <button type="button" class="btn btn-primary" onclick="saveWelcomeVideo('${domain}')">Save</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+    
+    function renderResourceList(type, items) {
+      if (!items || items.length === 0) {
+        return `
+          <div class="empty-state">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+            <h4>No ${type} added yet</h4>
+            <p>Add your first ${type.slice(0, -1)} using the form above.</p>
+          </div>
+        `;
+      }
+      
+      return `
+        <h3 style="margin-bottom: 1rem;">Existing ${type.charAt(0).toUpperCase() + type.slice(1)} (${items.length})</h3>
+        <div class="resource-grid">
+          ${items.map(item => `
+            <div class="resource-card">
+              <h5>${item.title || item.role || item.company}</h5>
+              <p>${item.description || ''}</p>
+              <div class="resource-tags">
+                ${(item.targetAudience || []).map(t => `<span class="resource-tag">${t}</span>`).join('')}
+              </div>
+              <button class="btn btn-outline" onclick="deleteResource('${type}', '${item.id}')" style="width: 100%; color: var(--destructive); border-color: var(--destructive);">Delete</button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+    
+    let uploadedFiles = [];
+    
+    function handleFileSelect(event, listId) {
+      const files = Array.from(event.target.files);
+      const listEl = document.getElementById(listId);
+      
+      files.forEach(file => {
+        uploadedFiles.push({
+          name: file.name,
+          size: file.size,
+          type: file.type
+        });
+      });
+      
+      renderFileList(listId);
+    }
+    
+    function renderFileList(listId) {
+      const listEl = document.getElementById(listId);
+      listEl.innerHTML = uploadedFiles.map((file, index) => `
+        <div class="uploaded-file">
+          <div class="uploaded-file-info">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+            <div>
+              <div class="uploaded-file-name">${file.name}</div>
+              <div class="uploaded-file-size">${formatFileSize(file.size)}</div>
+            </div>
+          </div>
+          <button class="remove-file" onclick="removeFile(${index}, '${listId}')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      `).join('');
+    }
+    
+    function removeFile(index, listId) {
+      uploadedFiles.splice(index, 1);
+      renderFileList(listId);
+    }
+    
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+    
+    function getSelectedAudiences() {
+      const checkboxes = document.querySelectorAll('input[name="targetAudience"]:checked');
+      return Array.from(checkboxes).map(cb => cb.value);
+    }
+    
+    function addRoadmap(e) {
+      e.preventDefault();
+      const roadmap = {
+        id: Date.now().toString(36),
+        title: document.getElementById('roadmapTitle').value,
+        description: document.getElementById('roadmapDescription').value,
+        duration: document.getElementById('roadmapDuration').value,
+        difficulty: document.getElementById('roadmapDifficulty').value,
+        targetAudience: getSelectedAudiences(),
+        videoUrl: document.getElementById('roadmapVideo').value,
+        files: [...uploadedFiles],
+        createdAt: new Date().toISOString()
+      };
+      
+      DataStore.roadmaps.push(roadmap);
+      DataStore.save();
+      uploadedFiles = [];
+      renderContent();
+      alert('Roadmap added successfully!');
+    }
+    
+    function addCareer(e) {
+      e.preventDefault();
+      const career = {
+        id: Date.now().toString(36),
+        title: document.getElementById('careerTitle').value,
+        description: document.getElementById('careerDescription').value,
+        salary: document.getElementById('careerSalary').value,
+        growth: document.getElementById('careerGrowth').value,
+        targetAudience: getSelectedAudiences(),
+        videoUrl: document.getElementById('careerVideo').value,
+        createdAt: new Date().toISOString()
+      };
+      
+      DataStore.careers.push(career);
+      DataStore.save();
+      renderContent();
+      alert('Career added successfully!');
+    }
+    
+    function addInternship(e) {
+      e.preventDefault();
+      const internship = {
+        id: Date.now().toString(36),
+        company: document.getElementById('internshipCompany').value,
+        role: document.getElementById('internshipRole').value,
+        duration: document.getElementById('internshipDuration').value,
+        stipend: document.getElementById('internshipStipend').value,
+        targetAudience: getSelectedAudiences(),
+        link: document.getElementById('internshipLink').value,
+        videoUrl: document.getElementById('internshipVideo').value,
+        createdAt: new Date().toISOString()
+      };
+      
+      DataStore.internships.push(internship);
+      DataStore.save();
+      renderContent();
+      alert('Internship added successfully!');
+    }
+    
+    function addWebinar(e) {
+      e.preventDefault();
+      const webinar = {
+        id: Date.now().toString(36),
+        title: document.getElementById('webinarTitle').value,
+        speaker: document.getElementById('webinarSpeaker').value,
+        date: document.getElementById('webinarDate').value,
+        time: document.getElementById('webinarTime').value,
+        targetAudience: getSelectedAudiences(),
+        link: document.getElementById('webinarLink').value,
+        videoUrl: document.getElementById('webinarVideo').value,
+        createdAt: new Date().toISOString()
+      };
+      
+      DataStore.webinars.push(webinar);
+      DataStore.save();
+      renderContent();
+      alert('Webinar added successfully!');
+    }
+    
+    function saveWelcomeVideo(domain) {
+      const url = document.getElementById('video_' + domain).value;
+      DataStore.welcomeVideos[domain] = url;
+      DataStore.save();
+      alert('Welcome video saved for ' + domain + '!');
+    }
+    
+    function deleteResource(type, id) {
+      if (confirm('Are you sure you want to delete this?')) {
+        DataStore[type] = DataStore[type].filter(item => item.id !== id);
+        DataStore.save();
+        renderContent();
+      }
+    }
+    
+    function logout() {
+      DataStore.currentUser = null;
+      DataStore.save();
+      window.location.href = 'index.html';
+    }
+    
+    // Initialize
+    renderContent();
+  </script>
+</body>
+</html>

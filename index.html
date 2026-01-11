@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PathFinder - Find Your Career Path</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        </div>
+        <span>PathFinder</span>
+      </a>
+      
+      <div class="nav-links" id="navLinks">
+        <a href="#services">Services</a>
+        <a href="#why-us">Why Us</a>
+        <a href="#paths">Career Paths</a>
+        <a href="#testimonials">Success Stories</a>
+      </div>
+      
+      <div class="nav-buttons">
+        <a href="login.html" class="btn btn-ghost">Log in</a>
+        <a href="signup.html" class="btn btn-primary">Sign up</a>
+      </div>
+      
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+    
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#services">Services</a>
+      <a href="#why-us">Why Us</a>
+      <a href="#paths">Career Paths</a>
+      <a href="#testimonials">Success Stories</a>
+      <div class="mobile-menu-buttons">
+        <a href="login.html" class="btn btn-ghost">Log in</a>
+        <a href="signup.html" class="btn btn-primary">Sign up</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="badge">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            <span>Trusted by 50,000+ Students</span>
+          </div>
+          
+          <h1>Your Future is <span class="text-primary">Bright.</span> Let's Find Your <span class="text-accent">Path.</span></h1>
+          
+          <p>Confused about what to do after 10th? We help students discover their perfect career path based on their interests, strengths, and dreams. Your journey to success starts here.</p>
+          
+          <div class="hero-buttons">
+            <a href="signup.html" class="btn btn-primary btn-lg">
+              Start Your Journey
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <a href="#paths" class="btn btn-outline btn-lg">Explore Career Paths</a>
+          </div>
+          
+          <div class="hero-stats">
+            <div class="stat">
+              <div class="stat-value">50K+</div>
+              <div class="stat-label">Students Guided</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">200+</div>
+              <div class="stat-label">Partner Colleges</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">95%</div>
+              <div class="stat-label">Success Rate</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="hero-visual">
+          <div class="hero-image-container">
+            <div class="hero-image">
+              <img src="/placeholder.svg?height=500&width=500" alt="Students celebrating">
+            </div>
+            
+            <div class="floating-card floating-card-left">
+              <div class="floating-icon floating-icon-primary">🎯</div>
+              <div>
+                <div class="floating-title">Career Match</div>
+                <div class="floating-subtitle">98% Accuracy</div>
+              </div>
+            </div>
+            
+            <div class="floating-card floating-card-right">
+              <div class="floating-icon floating-icon-accent">🚀</div>
+              <div>
+                <div class="floating-title">Dream College</div>
+                <div class="floating-subtitle">Found in 2 weeks</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="services">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Our Services</span>
+        <h2>Everything You Need to Build Your Future</h2>
+        <p>We provide comprehensive career guidance services to help you make informed decisions about your future.</p>
+      </div>
+      
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h3>Career Roadmaps</h3>
+          <span class="service-highlight">100+ Detailed Paths</span>
+          <p>Get personalized step-by-step roadmaps tailored to your chosen career path. Know exactly what courses, skills, and milestones you need to achieve.</p>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </div>
+          <h3>College References</h3>
+          <span class="service-highlight">200+ Partner Institutions</span>
+          <p>Access our curated database of top colleges and universities. Get recommendations based on your scores, location, and career goals.</p>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <h3>Internship Connect</h3>
+          <span class="service-highlight">500+ Opportunities</span>
+          <p>Gain real-world experience with internships at leading companies. Build your resume while still in school.</p>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>1-on-1 Mentorship</h3>
+          <span class="service-highlight">Expert Guidance</span>
+          <p>Connect with industry professionals and successful alumni who guide you through your career decisions.</p>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          </div>
+          <h3>Aptitude Assessment</h3>
+          <span class="service-highlight">AI-Powered Analysis</span>
+          <p>Discover your true strengths and interests through our scientifically designed assessment tests.</p>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+          </div>
+          <h3>Skill Development</h3>
+          <span class="service-highlight">Free Resources</span>
+          <p>Access courses and resources to build the skills that matter for your dream career.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Us Section -->
+  <section id="why-us" class="why-us">
+    <div class="container">
+      <div class="why-us-grid">
+        <div class="why-us-content">
+          <span class="section-tag">Why Choose Us</span>
+          <h2>We Don't Just Guide, We Transform Futures</h2>
+          <p>At PathFinder, we understand the pressure students face while choosing their career. That's why we've built a platform that combines technology with human expertise to give you the best guidance possible.</p>
+          
+          <div class="reasons">
+            <div class="reason">
+              <div class="reason-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </div>
+              <div>
+                <h4>Proven Track Record</h4>
+                <p>95% of our students successfully get into their dream colleges and career paths.</p>
+              </div>
+            </div>
+            
+            <div class="reason">
+              <div class="reason-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+              </div>
+              <div>
+                <h4>Student-First Approach</h4>
+                <p>We listen to your dreams and concerns. Your success is our only priority.</p>
+              </div>
+            </div>
+            
+            <div class="reason">
+              <div class="reason-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
+              <div>
+                <h4>Latest Industry Insights</h4>
+                <p>Our roadmaps are updated regularly with the latest industry trends and opportunities.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="why-us-card-container">
+          <div class="benefits-card">
+            <h3>What You Get With Us</h3>
+            <div class="benefits-list">
+              <div class="benefit-item">
+                <div class="benefit-check">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span>Personalized career assessment</span>
+              </div>
+              <div class="benefit-item">
+                <div class="benefit-check">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span>Expert counselor support</span>
+              </div>
+              <div class="benefit-item">
+                <div class="benefit-check">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span>24/7 access to resources</span>
+              </div>
+              <div class="benefit-item">
+                <div class="benefit-check">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span>Regular progress tracking</span>
+              </div>
+              <div class="benefit-item">
+                <div class="benefit-check">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span>Parent involvement sessions</span>
+              </div>
+              <div class="benefit-item">
+                <div class="benefit-check">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span>Scholarship guidance</span>
+              </div>
+            </div>
+            
+            <div class="quote-box">
+              <p>"The future belongs to those who believe in the beauty of their dreams."</p>
+              <span>— Eleanor Roosevelt</span>
+            </div>
+          </div>
+          <div class="benefits-card-bg"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Career Paths Section -->
+  <section id="paths" class="career-paths">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Explore Careers</span>
+        <h2>Find the Path That Excites You</h2>
+        <p>Whether you love science, numbers, creativity, or technology — we have detailed roadmaps for every career path.</p>
+      </div>
+      
+      <div class="category-tabs" id="categoryTabs">
+        <button class="tab-btn active" data-category="0">Science Stream</button>
+        <button class="tab-btn" data-category="1">Commerce Stream</button>
+        <button class="tab-btn" data-category="2">Arts & Humanities</button>
+        <button class="tab-btn" data-category="3">Emerging Fields</button>
+      </div>
+      
+      <div class="career-cards" id="careerCards">
+        <!-- Cards will be populated by JavaScript -->
+      </div>
+      
+      <div class="paths-cta">
+        <a href="signup.html" class="btn btn-outline btn-lg">
+          Explore All 100+ Career Paths
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Success Stories</span>
+        <h2>Students Who Found Their Path</h2>
+        <p>Hear from students who transformed their confusion into clarity with our guidance.</p>
+      </div>
+      
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="stars">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <p>"PathFinder helped me realize my true calling. I was confused between medical and engineering, but their assessment showed I had a strong aptitude for technology. Now I'm pursuing Computer Science at IIT Delhi!"</p>
+          <div class="testimonial-author">
+            <img src="/placeholder.svg?height=48&width=48" alt="Priya Sharma">
+            <div>
+              <div class="author-name">Priya Sharma</div>
+              <div class="author-role">Now at IIT Delhi</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="stars">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <p>"The detailed roadmap for CA was incredible. Every step was clearly laid out, and the mentorship sessions helped me stay motivated. Cleared my intermediate in first attempt!"</p>
+          <div class="testimonial-author">
+            <img src="/placeholder.svg?height=48&width=48" alt="Rahul Verma">
+            <div>
+              <div class="author-name">Rahul Verma</div>
+              <div class="author-role">CA Intermediate Cleared</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="stars">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <p>"I always loved art but didn't know it could be a career. PathFinder introduced me to UX Design and connected me with the right colleges. Now I'm interning at Google!"</p>
+          <div class="testimonial-author">
+            <img src="/placeholder.svg?height=48&width=48" alt="Ananya Patel">
+            <div>
+              <div class="author-name">Ananya Patel</div>
+              <div class="author-role">Design Intern at Google</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+      </div>
+      <h2>Your Dream Career is Closer Than You Think</h2>
+      <p>Don't let confusion hold you back. Join thousands of students who have already discovered their perfect career path with PathFinder.</p>
+      <div class="cta-buttons">
+        <a href="signup.html" class="btn btn-white btn-lg">
+          Get Started Free
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#" class="btn btn-outline-white btn-lg">Talk to a Counselor</a>
+      </div>
+      <p class="cta-note">No credit card required • Free career assessment included</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <div class="logo-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+            </div>
+            <span>PathFinder</span>
+          </a>
+          <p>Guiding students to discover and achieve their dream careers since 2020.</p>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Career Paths</a></li>
+            <li><a href="#">Colleges</a></li>
+            <li><a href="#">Internships</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Career Quiz</a></li>
+            <li><a href="#">Success Stories</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-contact">
+          <h4>Contact Us</h4>
+          <ul>
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              hello@pathfinder.com
+            </li>
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              +91 98765 43210
+            </li>
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              123 Education Hub, Bangalore, India
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>© 2026 PathFinder. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

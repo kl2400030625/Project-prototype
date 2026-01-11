@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome - PathFinder</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="onboarding-page">
+    <div class="onboarding-container">
+      <div class="onboarding-card">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width: 25%"></div>
+        </div>
+        
+        <div id="onboardingContent">
+          <!-- Step content will be rendered here -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="js/main.js"></script>
+  <script>
+    // Check if user is logged in
+    if (!DataStore.currentUser || DataStore.currentUser.role === 'admin') {
+      window.location.href = 'login.html';
+    }
+    
+    let currentStep = 1;
+    const totalSteps = 4;
+    
+    const answers = {
+      currentClass: '',
+      stream: '',
+      interests: [],
+      goals: [],
+      preferences: {
+        location: '',
+        budget: ''
+      }
+    };
+    
+    const steps = [
+      {
+        title: "What's your current educational status?",
+        subtitle: "Help us understand where you are in your academic journey",
+        type: "single",
+        field: "education",
+        options: [
+          { value: "10th", label: "10th Class", icon: "📚" },
+          { value: "11th", label: "11th Class", icon: "📖" },
+          { value: "12th", label: "12th Class", icon: "🎓" },
+          { value: "graduate", label: "Graduate", icon: "👨‍🎓" }
+        ]
+      },
+      {
+        title: "What are your interests?",
+        subtitle: "Select all areas that excite you",
+        type: "multi",
+        field: "interests",
+        options: [
+          { value: "technology", label: "Technology", icon: "💻" },
+          { value: "medicine", label: "Medicine", icon: "🏥" },
+          { value: "business", label: "Business", icon: "💼" },
+          { value: "arts", label: "Arts & Design", icon: "🎨" },
+          { value: "science", label: "Science", icon: "🔬" },
+          { value: "law", label: "Law", icon: "⚖️" },
+          { value: "engineering", label: "Engineering", icon: "⚙️" },
+          { value: "media", label: "Media", icon: "📺" }
+        ]
+      },
+      {
+        title: "What are your career goals?",
+        subtitle: "What matters most to you in your career?",
+        type: "multi",
+        field: "goals",
+        options: [
+          { value: "high-salary", label: "High Salary", icon: "💰" },
+          { value: "passion", label: "Follow Passion", icon: "❤️" },
+          { value: "stability", label: "Job Stability", icon: "🏠" },
+          { value: "abroad", label: "Work Abroad", icon: "✈️" },
+          { value: "entrepreneurship", label: "Start Business", icon: "🚀" },
+          { value: "impact", label: "Social Impact", icon: "🌍" }
+        ]
+      },
+      {
+        title: "Your preferences",
+        subtitle: "Help us personalize your recommendations",
+        type: "preferences",
+        fields: [
+          {
+            name: "location",
+            label: "Preferred Study Location",
+            options: ["Any", "Metro Cities", "Tier 2 Cities", "Abroad"]
+          },
+          {
+            name: "budget",
+            label: "Budget Range",
+            options: ["Any", "Under 5 Lakhs", "5-10 Lakhs", "Above 10 Lakhs"]
+          }
+        ]
+      }
+    ];
+    
+    function renderStep() {
+      const step = steps[currentStep - 1];
+      const progress = (currentStep / totalSteps) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+      
+      let html = `
+        <div class="onboarding-header">
+          <h2>${step.title}</h2>
+          <p>${step.subtitle}</p>
+        </div>
+      `;
+      
+      if (step.type === 'single') {
+        html += `<div class="option-grid two-col">`;
+        step.options.forEach(opt => {
+          const selected = answers.currentClass === opt.value || answers.stream === opt.value ? 'selected' : '';
+          html += `
+            <div class="option-card ${selected}" onclick="selectSingle('${step.field}', '${opt.value}')">
+              <div class="icon">${opt.icon}</div>
+              <h4>${opt.label}</h4>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      } else if (step.type === 'multi') {
+        html += `<div class="option-grid two-col">`;
+        step.options.forEach(opt => {
+          const selected = answers[step.field].includes(opt.value) ? 'selected' : '';
+          html += `
+            <div class="option-card ${selected}" onclick="toggleMulti('${step.field}', '${opt.value}')">
+              <div class="icon">${opt.icon}</div>
+              <h4>${opt.label}</h4>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      } else if (step.type === 'preferences') {
+        step.fields.forEach(field => {
+          html += `
+            <div class="form-group">
+              <label>${field.label}</label>
+              <select onchange="updatePreference('${field.name}', this.value)" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); font-size: 1rem;">
+                ${field.options.map(opt => `<option value="${opt}" ${answers.preferences[field.name] === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+              </select>
+            </div>
+          `;
+        });
+      }
+      
+      html += `
+        <div class="onboarding-buttons">
+          ${currentStep > 1 ? '<button class="btn btn-outline" onclick="prevStep()">Back</button>' : '<div></div>'}
+          <button class="btn btn-primary" onclick="nextStep()">${currentStep === totalSteps ? 'Complete' : 'Continue'}</button>
+        </div>
+      `;
+      
+      document.getElementById('onboardingContent').innerHTML = html;
+    }
+    
+    function selectSingle(field, value) {
+      if (field === 'education') {
+        if (['10th', '11th', '12th'].includes(value)) {
+          answers.currentClass = value;
+        } else {
+          answers.currentClass = value;
+        }
+      }
+      renderStep();
+    }
+    
+    function toggleMulti(field, value) {
+      const index = answers[field].indexOf(value);
+      if (index > -1) {
+        answers[field].splice(index, 1);
+      } else {
+        answers[field].push(value);
+      }
+      renderStep();
+    }
+    
+    function updatePreference(name, value) {
+      answers.preferences[name] = value;
+    }
+    
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        renderStep();
+      }
+    }
+    
+    function nextStep() {
+      if (currentStep < totalSteps) {
+        currentStep++;
+        renderStep();
+      } else {
+        // Complete onboarding
+        DataStore.currentUser.profile = answers;
+        DataStore.currentUser.onboardingComplete = true;
+        
+        // Update user in users array
+        const userIndex = DataStore.users.findIndex(u => u.id === DataStore.currentUser.id);
+        if (userIndex > -1) {
+          DataStore.users[userIndex] = DataStore.currentUser;
+        }
+        
+        DataStore.save();
+        window.location.href = 'welcome-video.html';
+      }
+    }
+    
+    // Initialize
+    renderStep();
+  </script>
+</body>
+</html>

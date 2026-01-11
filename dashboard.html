@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - PathFinder</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard">
+    <nav class="dashboard-nav">
+      <div class="dashboard-nav-content">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          </div>
+          <span>PathFinder</span>
+        </a>
+        <button class="btn btn-outline" onclick="logout()">Logout</button>
+      </div>
+    </nav>
+    
+    <main class="dashboard-main">
+      <div class="dashboard-header">
+        <h1 id="welcomeMessage">Welcome back!</h1>
+        <p>Explore career paths, internships, and resources tailored for you.</p>
+      </div>
+      
+      <!-- User Profile Card -->
+      <div class="profile-card" id="profileCard">
+        <!-- Profile content will be rendered here -->
+      </div>
+      
+      <div class="dashboard-tabs" id="dashboardTabs">
+        <button class="dashboard-tab active" data-tab="roadmaps">Roadmaps</button>
+        <button class="dashboard-tab" data-tab="careers">Careers</button>
+        <button class="dashboard-tab" data-tab="internships">Internships</button>
+        <button class="dashboard-tab" data-tab="webinars">Webinars</button>
+      </div>
+      
+      <div class="dashboard-content" id="dashboardContent">
+        <!-- Content will be rendered here -->
+      </div>
+    </main>
+  </div>
+  
+  <script src="js/main.js"></script>
+  <script>
+    // Check if user is logged in
+    if (!DataStore.currentUser || DataStore.currentUser.role === 'admin') {
+      window.location.href = 'login.html';
+    }
+    
+    // Check if onboarding is complete
+    if (!DataStore.currentUser.onboardingComplete) {
+      window.location.href = 'onboarding.html';
+    }
+    
+    let activeTab = 'roadmaps';
+    const user = DataStore.currentUser;
+    const profile = user.profile || {};
+    const userInterests = profile.interests || [];
+    
+    // Set welcome message
+    document.getElementById('welcomeMessage').textContent = `Welcome back, ${user.name || 'Student'}!`;
+    
+    // Render profile card
+    function renderProfileCard() {
+      const profileCard = document.getElementById('profileCard');
+      
+      if (!profile || Object.keys(profile).length === 0) {
+        profileCard.innerHTML = `
+          <p style="color: var(--muted-foreground);">Complete your profile to get personalized recommendations.</p>
+          <a href="onboarding.html" class="btn btn-primary" style="margin-top: 1rem;">Complete Profile</a>
+        `;
+        return;
+      }
+      
+      profileCard.innerHTML = `
+        <div class="profile-header">
+          <div class="profile-avatar">${(user.name || 'U')[0].toUpperCase()}</div>
+          <div class="profile-info">
+            <h3>${user.name || 'Student'}</h3>
+            <p>${user.email}</p>
+          </div>
+        </div>
+        <div class="profile-details">
+          <div class="profile-detail">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            <span>Class: ${profile.currentClass || 'N/A'}</span>
+          </div>
+          <div class="profile-detail">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            <span>Interests: ${(profile.interests || []).join(', ') || 'N/A'}</span>
+          </div>
+          <div class="profile-detail">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            <span>Goals: ${(profile.goals || []).join(', ') || 'N/A'}</span>
+          </div>
+          <div class="profile-detail">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Location: ${profile.preferences?.location || 'Any'}</span>
+          </div>
+        </div>
+      `;
+    }
+    
+    // Filter resources by user profile
+    function filterByUserProfile(items) {
+      const recommended = [];
+      const other = [];
+      
+      items.forEach(item => {
+        const targetAudience = item.targetAudience || [];
+        
+        if (targetAudience.includes('All Students')) {
+          recommended.push(item);
+        } else if (userInterests.some(interest => 
+          targetAudience.some(target => 
+            target.toLowerCase().includes(interest.toLowerCase()) ||
+            interest.toLowerCase().includes(target.toLowerCase())
+          )
+        )) {
+          recommended.push(item);
+        } else {
+          other.push(item);
+        }
+      });
+      
+      return { recommended, other };
+    }
+    
+    // Tab switching
+    document.getElementById('dashboardTabs').addEventListener('click', (e) => {
+      if (e.target.classList.contains('dashboard-tab')) {
+        activeTab = e.target.dataset.tab;
+        document.querySelectorAll('.dashboard-tab').forEach(t => t.classList.remove('active'));
+        e.target.classList.add('active');
+        renderContent();
+      }
+    });
+    
+    function renderContent() {
+      const content = document.getElementById('dashboardContent');
+      let items = [];
+      let resourceType = '';
+      
+      switch (activeTab) {
+        case 'roadmaps':
+          items = DataStore.roadmaps;
+          resourceType = 'roadmap';
+          break;
+        case 'careers':
+          items = DataStore.careers;
+          resourceType = 'career';
+          break;
+        case 'internships':
+          items = DataStore.internships;
+          resourceType = 'internship';
+          break;
+        case 'webinars':
+          items = DataStore.webinars;
+          resourceType = 'webinar';
+          break;
+      }
+      
+      if (!items || items.length === 0) {
+        content.innerHTML = `
+          <div class="empty-state">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+            <h4>No ${activeTab} available yet</h4>
+            <p>Check back later for new ${activeTab}!</p>
+          </div>
+        `;
+        return;
+      }
+      
+      const { recommended, other } = filterByUserProfile(items);
+      
+      let html = '';
+      
+      if (recommended.length > 0) {
+        html += `
+          <div class="resource-section">
+            <h4>
+              Recommended For You
+              <span class="badge" style="background: rgba(13, 148, 136, 0.1); color: var(--primary);">Based on your interests</span>
+            </h4>
+            <div class="resource-grid">
+              ${recommended.map(item => renderResourceCard(item, resourceType, true)).join('')}
+            </div>
+          </div>
+        `;
+      }
+      
+      if (other.length > 0) {
+        html += `
+          <div class="resource-section">
+            <h4>Other ${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</h4>
+            <div class="resource-grid">
+              ${other.map(item => renderResourceCard(item, resourceType, false)).join('')}
+            </div>
+          </div>
+        `;
+      }
+      
+      content.innerHTML = html;
+    }
+    
+    function renderResourceCard(item, type, isRecommended) {
+      let cardContent = '';
+      
+      switch (type) {
+        case 'roadmap':
+          cardContent = `
+            <h5>${item.title}</h5>
+            <p>${item.description}</p>
+            <div class="resource-tags">
+              ${item.duration ? `<span class="resource-tag">${item.duration}</span>` : ''}
+              ${item.difficulty ? `<span class="resource-tag">${item.difficulty}</span>` : ''}
+            </div>
+            ${item.files && item.files.length > 0 ? `
+              <p style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.5rem;">
+                ${item.files.length} attachment(s) available
+              </p>
+            ` : ''}
+            ${item.videoUrl ? '<button class="btn btn-outline" onclick="window.open(\'' + item.videoUrl + '\')">Watch Video</button>' : ''}
+          `;
+          break;
+        case 'career':
+          cardContent = `
+            <h5>${item.title}</h5>
+            <p>${item.description}</p>
+            <div class="resource-tags">
+              ${item.salary ? `<span class="resource-tag">${item.salary}</span>` : ''}
+              ${item.growth ? `<span class="resource-tag">${item.growth} Growth</span>` : ''}
+            </div>
+            ${item.videoUrl ? '<button class="btn btn-outline" onclick="window.open(\'' + item.videoUrl + '\')">Watch Video</button>' : ''}
+          `;
+          break;
+        case 'internship':
+          cardContent = `
+            <h5>${item.company}</h5>
+            <p>${item.role}</p>
+            <div class="resource-tags">
+              ${item.duration ? `<span class="resource-tag">${item.duration}</span>` : ''}
+              ${item.stipend ? `<span class="resource-tag">${item.stipend}</span>` : ''}
+            </div>
+            <button class="btn btn-primary" onclick="window.open('${item.link}')">Apply Now</button>
+            ${item.videoUrl ? '<button class="btn btn-outline" style="margin-top: 0.5rem;" onclick="window.open(\'' + item.videoUrl + '\')">Watch Video</button>' : ''}
+          `;
+          break;
+        case 'webinar':
+          cardContent = `
+            <h5>${item.title}</h5>
+            <p>Speaker: ${item.speaker}</p>
+            <div class="resource-tags">
+              <span class="resource-tag">${item.date}</span>
+              <span class="resource-tag">${item.time}</span>
+            </div>
+            <button class="btn btn-primary" onclick="window.open('${item.link}')">Register</button>
+            ${item.videoUrl ? '<button class="btn btn-outline" style="margin-top: 0.5rem;" onclick="window.open(\'' + item.videoUrl + '\')">Watch Recording</button>' : ''}
+          `;
+          break;
+      }
+      
+      return `
+        <div class="resource-card ${isRecommended ? 'recommended' : ''}">
+          ${cardContent}
+        </div>
+      `;
+    }
+    
+    function logout() {
+      DataStore.currentUser = null;
+      DataStore.save();
+      window.location.href = 'index.html';
+    }
+    
+    // Initialize
+    renderProfileCard();
+    renderContent();
+  </script>
+</body>
+</html>
