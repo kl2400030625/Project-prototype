@@ -1,8 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
-
-export type UserRole = "admin" | "user" | null
+import { createContext, useContext, useState, useEffect } from "react"
 
 export const TARGET_AUDIENCES = [
   { value: "engineering", label: "Engineering" },
@@ -13,129 +11,17 @@ export const TARGET_AUDIENCES = [
   { value: "law", label: "Law" },
   { value: "design", label: "Design & Creative" },
   { value: "all", label: "All Students" },
-] as const
+]
 
-export type TargetAudience = (typeof TARGET_AUDIENCES)[number]["value"]
-
-export interface UserProfile {
-  currentClass: string
-  stream: string
-  interests: string[]
-  goals: string[]
-  preferredLocation: string
-  budgetRange: string
-  completedOnboarding: boolean
-  hasWatchedWelcomeVideo?: boolean
-}
-
-export interface User {
-  id: string
-  name: string
-  email: string
-  role: UserRole
-  profile?: UserProfile
-}
-
-export interface RoadmapAttachment {
-  id: string
-  name: string
-  type: string
-  url: string
-  size: number
-}
-
-export interface Roadmap {
-  id: string
-  title: string
-  category: string
-  description: string
-  steps: string[]
-  attachments: RoadmapAttachment[]
-  targetAudience: TargetAudience[]
-  videoUrl?: string
-  createdAt: Date
-}
-
-export interface CareerOption {
-  id: string
-  title: string
-  field: string
-  description: string
-  avgSalary: string
-  requirements: string[]
-  targetAudience: TargetAudience[]
-  videoUrl?: string
-  createdAt: Date
-}
-
-export interface Internship {
-  id: string
-  company: string
-  role: string
-  location: string
-  duration: string
-  stipend: string
-  description: string
-  applyLink: string
-  targetAudience: TargetAudience[]
-  videoUrl?: string
-  createdAt: Date
-}
-
-export interface Webinar {
-  id: string
-  title: string
-  speaker: string
-  speakerTitle: string
-  description: string
-  date: string
-  time: string
-  duration: string
-  registrationLink: string
-  targetAudience: TargetAudience[]
-  videoUrl?: string
-  isRecorded: boolean
-  createdAt: Date
-}
-
-export interface WelcomeVideo {
-  id: string
-  domain: TargetAudience
-  title: string
-  description: string
-  videoUrl: string
-  createdAt: Date
-}
-
-interface AuthContextType {
-  user: User | null
-  login: (email: string, password: string, role: UserRole) => boolean
-  logout: () => void
-  signup: (name: string, email: string, password: string) => boolean
-  updateUserProfile: (profile: UserProfile) => void
-  roadmaps: Roadmap[]
-  addRoadmap: (roadmap: Omit<Roadmap, "id" | "createdAt">) => void
-  careerOptions: CareerOption[]
-  addCareerOption: (option: Omit<CareerOption, "id" | "createdAt">) => void
-  internships: Internship[]
-  addInternship: (internship: Omit<Internship, "id" | "createdAt">) => void
-  webinars: Webinar[]
-  addWebinar: (webinar: Omit<Webinar, "id" | "createdAt">) => void
-  welcomeVideos: WelcomeVideo[]
-  addWelcomeVideo: (video: Omit<WelcomeVideo, "id" | "createdAt">) => void
-  getWelcomeVideoForUser: () => WelcomeVideo | null
-  markWelcomeVideoWatched: () => void
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext(undefined)
 
 const ADMIN_CREDENTIALS = {
   username: "admin@pathfinder.com",
   password: "admin123",
 }
 
-function mapInterestsToAudiences(interests: string[]): TargetAudience[] {
-  const mapping: Record<string, TargetAudience> = {
+function mapInterestsToAudiences(interests) {
+  const mapping = {
     technology: "engineering",
     engineering: "engineering",
     medicine: "medicine",
@@ -149,7 +35,7 @@ function mapInterestsToAudiences(interests: string[]): TargetAudience[] {
     education: "arts",
   }
 
-  const audiences = new Set<TargetAudience>()
+  const audiences = new Set()
   interests.forEach((interest) => {
     if (mapping[interest]) {
       audiences.add(mapping[interest])
@@ -158,13 +44,13 @@ function mapInterestsToAudiences(interests: string[]): TargetAudience[] {
   return Array.from(audiences)
 }
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [roadmaps, setRoadmaps] = useState<Roadmap[]>([])
-  const [careerOptions, setCareerOptions] = useState<CareerOption[]>([])
-  const [internships, setInternships] = useState<Internship[]>([])
-  const [webinars, setWebinars] = useState<Webinar[]>([])
-  const [welcomeVideos, setWelcomeVideos] = useState<WelcomeVideo[]>([])
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null)
+  const [roadmaps, setRoadmaps] = useState([])
+  const [careerOptions, setCareerOptions] = useState([])
+  const [internships, setInternships] = useState([])
+  const [webinars, setWebinars] = useState([])
+  const [welcomeVideos, setWelcomeVideos] = useState([])
 
   useEffect(() => {
     const savedUser = localStorage.getItem("pathfinder_user")
@@ -210,7 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("pathfinder_welcome_videos", JSON.stringify(welcomeVideos))
   }, [welcomeVideos])
 
-  const login = (email: string, password: string, role: UserRole): boolean => {
+  const login = (email, password, role) => {
     if (role === "admin") {
       if (email === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
         setUser({
@@ -226,7 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const savedUsers = JSON.parse(localStorage.getItem("pathfinder_users") || "[]")
     const foundUser = savedUsers.find(
-      (u: { email: string; password: string }) => u.email === email && u.password === password,
+      (u) => u.email === email && u.password === password,
     )
 
     if (foundUser) {
@@ -246,9 +132,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
   }
 
-  const signup = (name: string, email: string, password: string): boolean => {
+  const signup = (name, email, password) => {
     const savedUsers = JSON.parse(localStorage.getItem("pathfinder_users") || "[]")
-    const exists = savedUsers.some((u: { email: string }) => u.email === email)
+    const exists = savedUsers.some((u) => u.email === email)
 
     if (exists) return false
 
@@ -273,22 +159,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return true
   }
 
-  const updateUserProfile = (profile: UserProfile) => {
+  const updateUserProfile = (profile) => {
     if (!user) return
 
     const updatedUser = { ...user, profile }
     setUser(updatedUser)
 
     const savedUsers = JSON.parse(localStorage.getItem("pathfinder_users") || "[]")
-    const userIndex = savedUsers.findIndex((u: { id: string }) => u.id === user.id)
+    const userIndex = savedUsers.findIndex((u) => u.id === user.id)
     if (userIndex !== -1) {
       savedUsers[userIndex].profile = profile
       localStorage.setItem("pathfinder_users", JSON.stringify(savedUsers))
     }
   }
 
-  const addRoadmap = (roadmap: Omit<Roadmap, "id" | "createdAt">) => {
-    const newRoadmap: Roadmap = {
+  const addRoadmap = (roadmap) => {
+    const newRoadmap = {
       ...roadmap,
       id: `roadmap-${Date.now()}`,
       createdAt: new Date(),
@@ -296,8 +182,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setRoadmaps((prev) => [newRoadmap, ...prev])
   }
 
-  const addCareerOption = (option: Omit<CareerOption, "id" | "createdAt">) => {
-    const newOption: CareerOption = {
+  const addCareerOption = (option) => {
+    const newOption = {
       ...option,
       id: `career-${Date.now()}`,
       createdAt: new Date(),
@@ -305,8 +191,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setCareerOptions((prev) => [newOption, ...prev])
   }
 
-  const addInternship = (internship: Omit<Internship, "id" | "createdAt">) => {
-    const newInternship: Internship = {
+  const addInternship = (internship) => {
+    const newInternship = {
       ...internship,
       id: `internship-${Date.now()}`,
       createdAt: new Date(),
@@ -314,8 +200,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setInternships((prev) => [newInternship, ...prev])
   }
 
-  const addWebinar = (webinar: Omit<Webinar, "id" | "createdAt">) => {
-    const newWebinar: Webinar = {
+  const addWebinar = (webinar) => {
+    const newWebinar = {
       ...webinar,
       id: `webinar-${Date.now()}`,
       createdAt: new Date(),
@@ -323,7 +209,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setWebinars((prev) => [newWebinar, ...prev])
   }
 
-  const addWelcomeVideo = (video: Omit<WelcomeVideo, "id" | "createdAt">) => {
+  const addWelcomeVideo = (video) => {
     // Replace existing video for the same domain
     setWelcomeVideos((prev) => {
       const filtered = prev.filter((v) => v.domain !== video.domain)
@@ -331,7 +217,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })
   }
 
-  const getWelcomeVideoForUser = (): WelcomeVideo | null => {
+  const getWelcomeVideoForUser = () => {
     if (!user?.profile?.interests) return null
 
     const userAudiences = mapInterestsToAudiences(user.profile.interests)
@@ -386,16 +272,13 @@ export function useAuth() {
   return context
 }
 
-export function filterByUserProfile<T extends { targetAudience?: TargetAudience[] }>(
-  items: T[],
-  userProfile?: UserProfile,
-): { recommended: T[]; other: T[] } {
+export function filterByUserProfile(items, userProfile) {
   if (!userProfile) return { recommended: items, other: [] }
 
   const userAudiences = mapInterestsToAudiences(userProfile.interests || [])
 
-  const recommended: T[] = []
-  const other: T[] = []
+  const recommended = []
+  const other = []
 
   items.forEach((item) => {
     const targetAudience = item.targetAudience || []

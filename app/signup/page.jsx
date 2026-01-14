@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
@@ -30,7 +28,7 @@ export default function SignupPage() {
     { label: "Contains a letter", met: /[a-zA-Z]/.test(password) },
   ]
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSignup = async (e) => {
     e.preventDefault()
     setError("")
 
